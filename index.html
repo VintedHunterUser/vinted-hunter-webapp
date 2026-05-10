@@ -1,1 +1,499 @@
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Vinted Hunter - Панель управления</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0f0f1a;
+            color: #eee;
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: -16px -16px 20px -16px;
+            padding: 20px 16px;
+            border-radius: 0 0 20px 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .stats {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            flex: 1;
+            background: #16213e;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .card {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .search-name {
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-badge {
+            font-size: 10px;
+            background: #2c3e50;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .status-active {
+            background: #27ae60;
+            color: white;
+        }
+        .search-url {
+            font-size: 12px;
+            color: #667eea;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .filter {
+            background: #0f3460;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .btn {
+            background: #e94560;
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .btn-secondary {
+            background: #2c3e50;
+        }
+        .btn-danger {
+            background: #c0392b;
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .add-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #16213e;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+        .modal-content h3 {
+            margin-bottom: 16px;
+        }
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #0f3460;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            z-index: 150;
+            animation: fadeOut 3s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>🏆 Vinted Hunter</h1>
+        <p>Профессиональный мониторинг</p>
+    </div>
+    
+    <div class="stats" id="stats">
+        <div class="stat-card">
+            <div class="number" id="statSearches">0</div>
+            <div class="label">Активных поисков</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="statFound">0</div>
+            <div class="label">Найдено сегодня</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="statPlan">FREE</div>
+            <div class="label">Ваш тариф</div>
+        </div>
+    </div>
+    
+    <div id="content">
+        <div class="loading">Загрузка...</div>
+    </div>
+    
+    <button class="add-btn" onclick="showAddModal()">➕ Добавить поиск</button>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Добавить поиск</h3>
+            <input type="text" id="searchName" placeholder="Название (например: iPhone 15)">
+            <input type="text" id="searchUrl" placeholder="Ссылка на поиск Vinted">
+            <input type="number" id="minPrice" placeholder="Мин. цена (опционально)">
+            <input type="number" id="maxPrice" placeholder="Макс. цена (опционально)">
+            <input type="number" id="targetPrice" placeholder="Целевая цена (опционально)">
+            <select id="photoEnabled">
+                <option value="1">📸 Отправлять фото (Premium/Pro)</option>
+                <option value="0">📝 Только текст (Free)</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                <button class="btn" onclick="confirmAdd()">Добавить</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3>Редактировать поиск</h3>
+            <input type="hidden" id="editId">
+            <input type="text" id="editName" placeholder="Название">
+            <input type="text" id="editUrl" placeholder="Ссылка">
+            <input type="number" id="editMinPrice" placeholder="Мин. цена">
+            <input type="number" id="editMaxPrice" placeholder="Макс. цена">
+            <input type="number" id="editTargetPrice" placeholder="Целевая цена">
+            <select id="editPhotoEnabled">
+                <option value="1">📸 Отправлять фото</option>
+                <option value="0">📝 Только текст</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
+                <button class="btn" onclick="confirmEdit()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+        tg.enableClosingConfirmation();
+        
+        const API_BASE = 'https://your-server.com/api';
+        const CHAT_ID = tg.initDataUnsafe.user.id;
+        
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = isError ? '#c0392b' : '#27ae60';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        async function loadData() {
+            try {
+                const response = await fetch(`${API_BASE}/searches?chat_id=${CHAT_ID}`);
+                const data = await response.json();
+                renderSearches(data.searches || []);
+                document.getElementById('statSearches').innerText = data.searches?.length || 0;
+                document.getElementById('statFound').innerText = data.today_found || 0;
+                document.getElementById('statPlan').innerText = data.plan || 'FREE';
+            } catch (error) {
+                console.error(error);
+                document.getElementById('content').innerHTML = '<div class="empty">❌ Ошибка загрузки. Проверьте соединение.</div>';
+            }
+        }
+        
+        function renderSearches(searches) {
+            const container = document.getElementById('content');
+            if (!searches || searches.length === 0) {
+                container.innerHTML = '<div class="empty">📭 Нет активных поисков<br><br>Нажмите кнопку "Добавить поиск"</div>';
+                return;
+            }
+            
+            let html = '';
+            for (let s of searches) {
+                html += `
+                    <div class="card">
+                        <div class="search-header">
+                            <div class="search-name">
+                                🔍 ${escapeHtml(s.name)}
+                                <span class="status-badge ${s.active ? 'status-active' : ''}">${s.active ? 'Активен' : 'На паузе'}</span>
+                            </div>
+                        </div>
+                        <div class="search-url">🔗 ${truncate(s.url, 60)}</div>
+                        <div class="filters">
+                            ${s.min_price ? `<span class="filter">💰 от ${s.min_price} zł</span>` : ''}
+                            ${s.max_price ? `<span class="filter">💰 до ${s.max_price} zł</span>` : ''}
+                            ${s.target_price ? `<span class="filter">🎯 цель ${s.target_price} zł</span>` : ''}
+                            ${s.photo_enabled ? '<span class="filter">📸 Фото</span>' : '<span class="filter">📝 Текст</span>'}
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm" onclick="toggleSearch(${s.id}, ${!s.active})">${s.active ? '⏸ Пауза' : '▶️ Запуск'}</button>
+                            <button class="btn btn-secondary btn-sm" onclick="showEditModal(${s.id})">✏️ Редактировать</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteSearch(${s.id})">🗑 Удалить</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+        
+        function showAddModal() {
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchUrl').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('targetPrice').value = '';
+            document.getElementById('photoEnabled').value = '1';
+            document.getElementById('modal').style.display = 'flex';
+        }
+        
+        async function confirmAdd() {
+            const name = document.getElementById('searchName').value.trim();
+            const url = document.getElementById('searchUrl').value.trim();
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            const targetPrice = document.getElementById('targetPrice').value;
+            const photoEnabled = document.getElementById('photoEnabled').value;
+            
+            if (!name || !url) {
+                showToast('Заполните название и ссылку!', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/searches`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        name: name,
+                        url: url,
+                        min_price: parseInt(minPrice) || 0,
+                        max_price: parseInt(maxPrice) || 100000,
+                        target_price: parseInt(targetPrice) || 0,
+                        photo_enabled: parseInt(photoEnabled)
+                    })
+                });
+                
+                if (response.ok) {
+                    closeModal();
+                    loadData();
+                    showToast('✅ Поиск добавлен!');
+                } else {
+                    showToast('❌ Ошибка при добавлении', true);
+                }
+            } catch (error) {
+                showToast('❌ Ошибка сети', true);
+            }
+        }
+        
+        function showEditModal(id) {
+            // Найти поиск по id и заполнить форму
+            document.getElementById('editId').value = id;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        async function confirmEdit() {
+            const id = document.getElementById('editId').value;
+            const name = document.getElementById('editName').value;
+            const url = document.getElementById('editUrl').value;
+            const minPrice = document.getElementById('editMinPrice').value;
+            const maxPrice = document.getElementById('editMaxPrice').value;
+            const targetPrice = document.getElementById('editTargetPrice').value;
+            const photoEnabled = document.getElementById('editPhotoEnabled').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/searches/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        name: name,
+                        url: url,
+                        min_price: parseInt(minPrice) || 0,
+                        max_price: parseInt(maxPrice) || 100000,
+                        target_price: parseInt(targetPrice) || 0,
+                        photo_enabled: parseInt(photoEnabled)
+                    })
+                });
+                
+                if (response.ok) {
+                    closeEditModal();
+                    loadData();
+                    showToast('✅ Поиск обновлён!');
+                } else {
+                    showToast('❌ Ошибка при обновлении', true);
+                }
+            } catch (error) {
+                showToast('❌ Ошибка сети', true);
+            }
+        }
+        
+        async function toggleSearch(id, active) {
+            try {
+                const response = await fetch(`${API_BASE}/searches/${id}/toggle`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, active: active })
+                });
+                if (response.ok) {
+                    loadData();
+                    showToast(active ? '▶️ Поиск запущен' : '⏸ Поиск на паузе');
+                }
+            } catch (error) {
+                showToast('❌ Ошибка', true);
+            }
+        }
+        
+        async function deleteSearch(id) {
+            tg.showConfirm('Удалить этот поиск?', async (ok) => {
+                if (ok) {
+                    try {
+                        const response = await fetch(`${API_BASE}/searches/${id}?chat_id=${CHAT_ID}`, {
+                            method: 'DELETE'
+                        });
+                        if (response.ok) {
+                            loadData();
+                            showToast('🗑 Поиск удалён');
+                        }
+                    } catch (error) {
+                        showToast('❌ Ошибка', true);
+                    }
+                }
+            });
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        function truncate(str, len) {
+            return str.length > len ? str.substring(0, len) + '...' : str;
+        }
+        
+        loadData();
+    </script>
+</body>
+</html>
