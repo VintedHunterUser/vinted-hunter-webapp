@@ -3,147 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Vinted Hunter - Панель управления</title>
+    <title>Vinted Hunter Pro — Элитный мониторинг</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #0f0f1a;
-            color: #eee;
-            padding: 16px;
-            padding-bottom: 80px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: radial-gradient(ellipse at 20% 30%, #0a0a1a, #03030a);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
         }
-        .header {
+        
+        /* Премиум-градиенты */
+        .premium-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Glassmorphism (стеклянный эффект) */
+        .glass-card {
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(102, 126, 234, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(102,126,234,0.2);
+        }
+        
+        /* Шапка */
+        .hero {
             text-align: center;
-            padding: 20px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: -16px -16px 20px -16px;
-            padding: 20px 16px;
-            border-radius: 0 0 20px 20px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.1) 100%);
+            border-radius: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(102,126,234,0.3);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
         }
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 4px;
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
         }
-        .header p {
-            font-size: 12px;
-            opacity: 0.8;
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        .stats {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
+        
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #667eea, #f093fb);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+            position: relative;
+            z-index: 1;
         }
+        
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .hero p {
+            color: rgba(255,255,255,0.7);
+            margin-top: 10px;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
         .stat-card {
-            flex: 1;
-            background: #16213e;
-            border-radius: 16px;
-            padding: 16px;
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
             text-align: center;
+            border: 1px solid rgba(102,126,234,0.3);
+            transition: all 0.3s;
         }
+        
         .stat-card .number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
+        
         .stat-card .label {
             font-size: 12px;
-            color: #aaa;
-            margin-top: 4px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .card {
-            background: #16213e;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
+        
+        /* Табы */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(22, 33, 62, 0.5);
+            padding: 5px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
         }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+        }
+        
+        /* Карточка поиска */
+        .search-card {
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(102,126,234,0.2);
+            transition: all 0.3s;
+        }
+        
+        .search-card:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
         .search-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
         }
+        
         .search-name {
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .status-badge {
-            font-size: 10px;
-            background: #2c3e50;
-            padding: 2px 8px;
+        
+        .search-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 4px 10px;
             border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
         }
-        .status-active {
-            background: #27ae60;
-            color: white;
-        }
+        
         .search-url {
-            font-size: 12px;
-            color: #667eea;
+            font-size: 11px;
+            color: rgba(102,126,234,0.8);
             margin-bottom: 12px;
             word-break: break-all;
+            font-family: monospace;
         }
+        
         .filters {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 16px;
         }
-        .filter {
-            background: #0f3460;
-            padding: 4px 12px;
+        
+        .filter-tag {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(102,126,234,0.2);
         }
-        .btn {
-            background: #e94560;
+        
+        .filter-tag.highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 25px;
-            font-size: 14px;
+        }
+        
+        /* Кнопки */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            font-size: 13px;
         }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+        
         .btn-secondary {
-            background: #2c3e50;
+            background: rgba(44, 62, 80, 0.8);
+            color: white;
+            border: 1px solid rgba(102,126,234,0.3);
         }
+        
         .btn-danger {
-            background: #c0392b;
+            background: rgba(192, 57, 43, 0.8);
+            color: white;
         }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
+        
         .btn-group {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
-        .add-btn {
+        
+        /* Добавить кнопку */
+        .fab {
             position: fixed;
             bottom: 20px;
             left: 20px;
             right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            padding: 14px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 16px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 700;
             cursor: pointer;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            box-shadow: 0 4px 20px rgba(102,126,234,0.5);
+            transition: all 0.3s;
+            border: none;
+            color: white;
+            font-size: 16px;
         }
+        
+        .fab:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(102,126,234,0.7);
+        }
+        
+        /* Модалка */
         .modal {
             display: none;
             position: fixed;
@@ -152,80 +307,153 @@
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
             z-index: 200;
-            padding: 20px;
             align-items: center;
             justify-content: center;
-        }
-        .modal-content {
-            background: #16213e;
-            border-radius: 20px;
             padding: 20px;
+        }
+        
+        .modal-content {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 24px;
             max-width: 400px;
             width: 100%;
+            border: 1px solid rgba(102,126,234,0.3);
         }
+        
         .modal-content h3 {
-            margin-bottom: 16px;
+            font-size: 24px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .modal-content input, .modal-content select {
+        
+        .modal-content input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin: 8px 0;
-            background: #0f3460;
-            border: none;
-            border-radius: 12px;
+            background: rgba(15, 52, 96, 0.8);
+            border: 1px solid rgba(102,126,234,0.3);
+            border-radius: 16px;
             color: white;
             font-size: 14px;
         }
+        
+        .modal-content input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
         .modal-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 16px;
+            margin-top: 20px;
         }
+        
+        /* История находок */
+        .history-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(22, 33, 62, 0.5);
+            border-radius: 20px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .history-item:hover {
+            background: rgba(22, 33, 62, 0.8);
+            transform: translateX(5px);
+        }
+        
+        .history-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #0f3460;
+        }
+        
+        .history-info {
+            flex: 1;
+        }
+        
+        .history-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .history-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .history-time {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+        }
+        
+        /* Анимация загрузки */
         .loading {
             text-align: center;
             padding: 40px;
-            color: #aaa;
         }
-        .empty {
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(102,126,234,0.3);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Пустое состояние */
+        .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #aaa;
+            padding: 60px 20px;
+            background: rgba(22, 33, 62, 0.5);
+            border-radius: 32px;
+            border: 1px dashed rgba(102,126,234,0.3);
         }
-        .toast {
-            position: fixed;
-            bottom: 80px;
-            left: 20px;
-            right: 20px;
-            background: #27ae60;
-            color: white;
-            padding: 12px;
-            border-radius: 12px;
-            text-align: center;
-            z-index: 150;
-            animation: fadeOut 3s forwards;
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
+        
+        /* Скрытые элементы */
+        .hidden {
+            display: none;
         }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div class="header">
-        <h1>🏆 Vinted Hunter</h1>
-        <p>Профессиональный мониторинг</p>
+    <div class="hero">
+        <h1>🏆 VINTED HUNTER</h1>
+        <p>Элитный мониторинг • Премиум аналитика • Молниеносные уведомления</p>
     </div>
     
-    <div class="stats" id="stats">
+    <div class="stats-grid" id="stats">
         <div class="stat-card">
             <div class="number" id="statSearches">0</div>
             <div class="label">Активных поисков</div>
         </div>
         <div class="stat-card">
-            <div class="number" id="statFound">0</div>
+            <div class="number" id="statToday">0</div>
             <div class="label">Найдено сегодня</div>
         </div>
         <div class="stat-card">
@@ -234,47 +462,32 @@
         </div>
     </div>
     
-    <div id="content">
-        <div class="loading">Загрузка...</div>
+    <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="searches">🔍 Поиски</div>
+        <div class="tab" data-tab="history">📜 История находок</div>
     </div>
     
-    <button class="add-btn" onclick="showAddModal()">➕ Добавить поиск</button>
+    <div id="searchesTab">
+        <div id="searchesList"></div>
+    </div>
     
-    <div id="modal" class="modal">
+    <div id="historyTab" class="hidden">
+        <div id="historyList"></div>
+    </div>
+    
+    <button class="fab" id="fabBtn">✨ ДОБАВИТЬ ПОИСК</button>
+    
+    <div id="addModal" class="modal">
         <div class="modal-content">
-            <h3 id="modalTitle">Добавить поиск</h3>
-            <input type="text" id="searchName" placeholder="Название (например: iPhone 15)">
-            <input type="text" id="searchUrl" placeholder="Ссылка на поиск Vinted">
-            <input type="number" id="minPrice" placeholder="Мин. цена (опционально)">
-            <input type="number" id="maxPrice" placeholder="Макс. цена (опционально)">
-            <input type="number" id="targetPrice" placeholder="Целевая цена (опционально)">
-            <select id="photoEnabled">
-                <option value="1">📸 Отправлять фото (Premium/Pro)</option>
-                <option value="0">📝 Только текст (Free)</option>
-            </select>
+            <h3>✨ Новый поиск</h3>
+            <input type="text" id="searchName" placeholder="Название (например: iPhone 15 Pro)">
+            <input type="text" id="searchUrl" placeholder="Ссылка на Vinted">
+            <input type="number" id="minPrice" placeholder="Мин. цена (0 = без лимита)">
+            <input type="number" id="maxPrice" placeholder="Макс. цена (0 = без лимита)">
+            <input type="number" id="targetPrice" placeholder="🎯 Целевая цена (опционально)">
             <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="sendSearch()">➕ Добавить</button>
                 <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
-                <button class="btn" onclick="confirmAdd()">Добавить</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <h3>Редактировать поиск</h3>
-            <input type="hidden" id="editId">
-            <input type="text" id="editName" placeholder="Название">
-            <input type="text" id="editUrl" placeholder="Ссылка">
-            <input type="number" id="editMinPrice" placeholder="Мин. цена">
-            <input type="number" id="editMaxPrice" placeholder="Макс. цена">
-            <input type="number" id="editTargetPrice" placeholder="Целевая цена">
-            <select id="editPhotoEnabled">
-                <option value="1">📸 Отправлять фото</option>
-                <option value="0">📝 Только текст</option>
-            </select>
-            <div class="modal-buttons">
-                <button class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
-                <button class="btn" onclick="confirmEdit()">Сохранить</button>
             </div>
         </div>
     </div>
@@ -288,84 +501,128 @@
         const API_BASE = 'https://your-server.com/api';
         const CHAT_ID = tg.initDataUnsafe.user.id;
         
-        function showToast(message, isError = false) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.style.background = isError ? '#c0392b' : '#27ae60';
-            toast.innerText = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
+        let currentTab = 'searches';
+        let history = [];
         
-        async function loadData() {
+        // Переключение табов
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentTab = tab.dataset.tab;
+                
+                if (currentTab === 'searches') {
+                    document.getElementById('searchesTab').classList.remove('hidden');
+                    document.getElementById('historyTab').classList.add('hidden');
+                    loadSearches();
+                } else {
+                    document.getElementById('searchesTab').classList.add('hidden');
+                    document.getElementById('historyTab').classList.remove('hidden');
+                    loadHistory();
+                }
+            });
+        });
+        
+        // Загрузка поисков
+        async function loadSearches() {
+            const container = document.getElementById('searchesList');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>Загрузка...</div></div>';
+            
             try {
                 const response = await fetch(`${API_BASE}/searches?chat_id=${CHAT_ID}`);
                 const data = await response.json();
-                renderSearches(data.searches || []);
+                
                 document.getElementById('statSearches').innerText = data.searches?.length || 0;
-                document.getElementById('statFound').innerText = data.today_found || 0;
+                document.getElementById('statToday').innerText = data.today_found || 0;
                 document.getElementById('statPlan').innerText = data.plan || 'FREE';
+                
+                if (!data.searches || data.searches.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><div>Нет активных поисков</div><div style="font-size:12px; margin-top:8px;">Нажмите кнопку ниже, чтобы добавить</div></div>`;
+                    return;
+                }
+                
+                let html = '';
+                for (let s of data.searches) {
+                    html += `
+                        <div class="search-card">
+                            <div class="search-header">
+                                <div class="search-name">
+                                    🔍 ${escapeHtml(s.name)}
+                                    <span class="search-badge">ID: ${s.id}</span>
+                                </div>
+                                <span class="filter-tag ${s.active ? 'highlight' : ''}">${s.active ? '🟢 Активен' : '🔴 Пауза'}</span>
+                            </div>
+                            <div class="search-url">🔗 ${truncate(s.url, 60)}</div>
+                            <div class="filters">
+                                <span class="filter-tag">💰 ${s.min_price || 0} - ${s.max_price || '∞'} zł</span>
+                                ${s.target_price ? `<span class="filter-tag highlight">🎯 цель ${s.target_price} zł</span>` : ''}
+                                ${s.photo_enabled ? '<span class="filter-tag">📸 Фото</span>' : '<span class="filter-tag">📝 Текст</span>'}
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" onclick="toggleSearch(${s.id}, ${!s.active})">${s.active ? '⏸ Пауза' : '▶️ Старт'}</button>
+                                <button class="btn btn-primary" onclick="editSearch(${s.id})">✏️ Редактировать</button>
+                                <button class="btn btn-danger" onclick="deleteSearch(${s.id})">🗑 Удалить</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
             } catch (error) {
-                console.error(error);
-                document.getElementById('content').innerHTML = '<div class="empty">❌ Ошибка загрузки. Проверьте соединение.</div>';
+                container.innerHTML = '<div class="empty-state"><div class="icon">❌</div><div>Ошибка загрузки</div></div>';
             }
         }
         
-        function renderSearches(searches) {
-            const container = document.getElementById('content');
-            if (!searches || searches.length === 0) {
-                container.innerHTML = '<div class="empty">📭 Нет активных поисков<br><br>Нажмите кнопку "Добавить поиск"</div>';
-                return;
-            }
+        // Загрузка истории находок
+        async function loadHistory() {
+            const container = document.getElementById('historyList');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>Загрузка истории...</div></div>';
             
-            let html = '';
-            for (let s of searches) {
-                html += `
-                    <div class="card">
-                        <div class="search-header">
-                            <div class="search-name">
-                                🔍 ${escapeHtml(s.name)}
-                                <span class="status-badge ${s.active ? 'status-active' : ''}">${s.active ? 'Активен' : 'На паузе'}</span>
+            try {
+                const response = await fetch(`${API_BASE}/history?chat_id=${CHAT_ID}&limit=50`);
+                const data = await response.json();
+                
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><div>История пуста</div><div style="font-size:12px; margin-top:8px;">Как только бот найдёт товары, они появятся здесь</div></div>`;
+                    return;
+                }
+                
+                let html = '';
+                for (let item of data.items) {
+                    html += `
+                        <div class="history-item">
+                            ${item.photo ? `<img class="history-photo" src="${item.photo}" onerror="this.style.display='none'">` : '<div class="history-photo" style="display:flex;align-items:center;justify-content:center;">📱</div>'}
+                            <div class="history-info">
+                                <div class="history-title">${escapeHtml(item.title)}</div>
+                                <div class="history-price">💰 ${item.price} zł</div>
+                                <div class="history-time">${new Date(item.sent_at * 1000).toLocaleString()}</div>
                             </div>
+                            <button class="btn btn-secondary" style="padding:6px 12px; font-size:11px;" onclick="window.open('${item.url}', '_blank')">🔗</button>
                         </div>
-                        <div class="search-url">🔗 ${truncate(s.url, 60)}</div>
-                        <div class="filters">
-                            ${s.min_price ? `<span class="filter">💰 от ${s.min_price} zł</span>` : ''}
-                            ${s.max_price ? `<span class="filter">💰 до ${s.max_price} zł</span>` : ''}
-                            ${s.target_price ? `<span class="filter">🎯 цель ${s.target_price} zł</span>` : ''}
-                            ${s.photo_enabled ? '<span class="filter">📸 Фото</span>' : '<span class="filter">📝 Текст</span>'}
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm" onclick="toggleSearch(${s.id}, ${!s.active})">${s.active ? '⏸ Пауза' : '▶️ Запуск'}</button>
-                            <button class="btn btn-secondary btn-sm" onclick="showEditModal(${s.id})">✏️ Редактировать</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteSearch(${s.id})">🗑 Удалить</button>
-                        </div>
-                    </div>
-                `;
+                    `;
+                }
+                container.innerHTML = html;
+            } catch (error) {
+                container.innerHTML = '<div class="empty-state"><div class="icon">❌</div><div>Ошибка загрузки истории</div></div>';
             }
-            container.innerHTML = html;
         }
         
         function showAddModal() {
-            document.getElementById('searchName').value = '';
-            document.getElementById('searchUrl').value = '';
-            document.getElementById('minPrice').value = '';
-            document.getElementById('maxPrice').value = '';
-            document.getElementById('targetPrice').value = '';
-            document.getElementById('photoEnabled').value = '1';
-            document.getElementById('modal').style.display = 'flex';
+            document.getElementById('addModal').style.display = 'flex';
         }
         
-        async function confirmAdd() {
+        function closeModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+        
+        async function sendSearch() {
             const name = document.getElementById('searchName').value.trim();
             const url = document.getElementById('searchUrl').value.trim();
-            const minPrice = document.getElementById('minPrice').value;
-            const maxPrice = document.getElementById('maxPrice').value;
-            const targetPrice = document.getElementById('targetPrice').value;
-            const photoEnabled = document.getElementById('photoEnabled').value;
+            const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseInt(document.getElementById('maxPrice').value) || 100000;
+            const targetPrice = parseInt(document.getElementById('targetPrice').value) || 0;
             
             if (!name || !url) {
-                showToast('Заполните название и ссылку!', true);
+                tg.showAlert('❌ Заполните название и ссылку!');
                 return;
             }
             
@@ -377,107 +634,44 @@
                         chat_id: CHAT_ID,
                         name: name,
                         url: url,
-                        min_price: parseInt(minPrice) || 0,
-                        max_price: parseInt(maxPrice) || 100000,
-                        target_price: parseInt(targetPrice) || 0,
-                        photo_enabled: parseInt(photoEnabled)
+                        min_price: minPrice,
+                        max_price: maxPrice,
+                        target_price: targetPrice,
+                        photo_enabled: 1
                     })
                 });
                 
                 if (response.ok) {
                     closeModal();
-                    loadData();
-                    showToast('✅ Поиск добавлен!');
+                    loadSearches();
+                    tg.showAlert('✅ Поиск добавлен! Бот начнёт мониторинг.');
                 } else {
-                    showToast('❌ Ошибка при добавлении', true);
+                    tg.showAlert('❌ Ошибка при добавлении');
                 }
             } catch (error) {
-                showToast('❌ Ошибка сети', true);
-            }
-        }
-        
-        function showEditModal(id) {
-            // Найти поиск по id и заполнить форму
-            document.getElementById('editId').value = id;
-            document.getElementById('editModal').style.display = 'flex';
-        }
-        
-        async function confirmEdit() {
-            const id = document.getElementById('editId').value;
-            const name = document.getElementById('editName').value;
-            const url = document.getElementById('editUrl').value;
-            const minPrice = document.getElementById('editMinPrice').value;
-            const maxPrice = document.getElementById('editMaxPrice').value;
-            const targetPrice = document.getElementById('editTargetPrice').value;
-            const photoEnabled = document.getElementById('editPhotoEnabled').value;
-            
-            try {
-                const response = await fetch(`${API_BASE}/searches/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        name: name,
-                        url: url,
-                        min_price: parseInt(minPrice) || 0,
-                        max_price: parseInt(maxPrice) || 100000,
-                        target_price: parseInt(targetPrice) || 0,
-                        photo_enabled: parseInt(photoEnabled)
-                    })
-                });
-                
-                if (response.ok) {
-                    closeEditModal();
-                    loadData();
-                    showToast('✅ Поиск обновлён!');
-                } else {
-                    showToast('❌ Ошибка при обновлении', true);
-                }
-            } catch (error) {
-                showToast('❌ Ошибка сети', true);
-            }
-        }
-        
-        async function toggleSearch(id, active) {
-            try {
-                const response = await fetch(`${API_BASE}/searches/${id}/toggle`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, active: active })
-                });
-                if (response.ok) {
-                    loadData();
-                    showToast(active ? '▶️ Поиск запущен' : '⏸ Поиск на паузе');
-                }
-            } catch (error) {
-                showToast('❌ Ошибка', true);
+                tg.showAlert('❌ Ошибка сети');
             }
         }
         
         async function deleteSearch(id) {
             tg.showConfirm('Удалить этот поиск?', async (ok) => {
                 if (ok) {
-                    try {
-                        const response = await fetch(`${API_BASE}/searches/${id}?chat_id=${CHAT_ID}`, {
-                            method: 'DELETE'
-                        });
-                        if (response.ok) {
-                            loadData();
-                            showToast('🗑 Поиск удалён');
-                        }
-                    } catch (error) {
-                        showToast('❌ Ошибка', true);
+                    const response = await fetch(`${API_BASE}/searches/${id}?chat_id=${CHAT_ID}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        loadSearches();
+                        tg.showAlert('🗑 Поиск удалён');
                     }
                 }
             });
         }
         
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-        
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
+        async function toggleSearch(id, active) {
+            const response = await fetch(`${API_BASE}/searches/${id}/toggle`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, active: active })
+            });
+            if (response.ok) loadSearches();
         }
         
         function escapeHtml(str) {
@@ -493,7 +687,9 @@
             return str.length > len ? str.substring(0, len) + '...' : str;
         }
         
-        loadData();
+        document.getElementById('fabBtn').onclick = showAddModal;
+        
+        loadSearches();
     </script>
 </body>
 </html>
