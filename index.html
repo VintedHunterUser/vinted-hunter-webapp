@@ -2,182 +2,76 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Vinted Hunter Pro — Управление мониторингом</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Vinted Hunter</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
             background: radial-gradient(ellipse at 20% 30%, #0a0a1a, #03030a);
-            color: #fff;
-            min-height: 100vh;
-            padding: 16px;
+            color: white;
+            padding: 20px;
             padding-bottom: 100px;
+            min-height: 100vh;
         }
-        
-        /* Премиум-эффекты */
-        .glass {
+        .glass-card {
             background: rgba(22, 33, 62, 0.7);
             backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 16px;
             border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 24px;
         }
-        
         .gradient-text {
             background: linear-gradient(135deg, #667eea, #f093fb);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        
         .btn {
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            font-size: 14px;
-        }
-        
-        .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
             color: white;
-            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
         }
-        
         .btn-secondary {
             background: rgba(44, 62, 80, 0.8);
-            color: white;
-            border: 1px solid rgba(102,126,234,0.3);
         }
-        
-        .btn-danger {
-            background: rgba(192, 57, 43, 0.8);
-            color: white;
+        .stats {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+        .stat .number {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
         .header {
             text-align: center;
             padding: 30px 20px;
             background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.1));
             border-radius: 40px;
             margin-bottom: 20px;
-            border: 1px solid rgba(102,126,234,0.3);
         }
-        
-        .header h1 {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #667eea, #f093fb);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: rgba(22, 33, 62, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 16px;
-            text-align: center;
-            border: 1px solid rgba(102,126,234,0.3);
-        }
-        
-        .stat-card .number {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #f093fb);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            background: rgba(22, 33, 62, 0.5);
-            padding: 5px;
-            border-radius: 60px;
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: rgba(255,255,255,0.6);
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-        
-        .search-card, .setting-card {
-            background: rgba(22, 33, 62, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(102,126,234,0.2);
-        }
-        
-        .search-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .search-name {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0;
-        }
-        
-        .filter-tag {
-            background: rgba(15, 52, 96, 0.8);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .filter-tag.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        
+        .header h1 { font-size: 28px; }
+        .btn-group { display: flex; gap: 10px; margin-top: 12px; }
         .fab {
             position: fixed;
             bottom: 20px;
@@ -187,15 +81,12 @@
             padding: 16px;
             border-radius: 50px;
             text-align: center;
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(102,126,234,0.5);
             border: none;
             color: white;
             font-size: 16px;
         }
-        
         .modal {
             display: none;
             position: fixed;
@@ -205,278 +96,156 @@
             bottom: 0;
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(20px);
-            z-index: 200;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            z-index: 200;
         }
-        
         .modal-content {
-            background: rgba(22, 33, 62, 0.95);
-            border-radius: 32px;
+            background: #16213e;
+            border-radius: 28px;
             padding: 24px;
             max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(102,126,234,0.3);
         }
-        
-        .modal-content input, .modal-content select {
+        .modal-content input {
             width: 100%;
             padding: 14px;
             margin: 8px 0;
-            background: rgba(15, 52, 96, 0.8);
-            border: 1px solid rgba(102,126,234,0.3);
+            background: #0f3460;
+            border: none;
             border-radius: 16px;
             color: white;
-            font-size: 14px;
         }
-        
-        .lang-btn {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 4px;
-            border-radius: 30px;
-            background: rgba(44, 62, 80, 0.8);
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(22,33,62,0.5);
+            padding: 5px;
+            border-radius: 60px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 50px;
             cursor: pointer;
+            color: rgba(255,255,255,0.6);
         }
-        
-        .lang-btn.selected {
+        .tab.active {
             background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
         }
-        
         .hidden { display: none; }
-        
-        .loading { text-align: center; padding: 40px; }
-        .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(102,126,234,0.3); border-top-color: #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .empty-state { text-align: center; padding: 40px; background: rgba(22,33,62,0.5); border-radius: 24px; }
+        .filter-tag {
+            background: #0f3460;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="header">
         <h1>🏆 VINTED HUNTER</h1>
-        <p>Элитный мониторинг • Премиум аналитика</p>
+        <p>Элитный мониторинг Vinted</p>
     </div>
     
-    <div class="stats-grid" id="stats">
-        <div class="stat-card"><div class="number" id="statSearches">-</div><div>Поисков</div></div>
-        <div class="stat-card"><div class="number" id="statToday">-</div><div>Сегодня</div></div>
-        <div class="stat-card"><div class="number" id="statPlan">FREE</div><div>Тариф</div></div>
+    <div class="stats">
+        <div class="stat"><div class="number" id="statSearches">0</div><div>Поисков</div></div>
+        <div class="stat"><div class="number" id="statToday">0</div><div>Сегодня</div></div>
+        <div class="stat"><div class="number" id="statPlan">FREE</div><div>Тариф</div></div>
     </div>
     
     <div class="tabs">
         <div class="tab active" data-tab="searches">🔍 ПОИСКИ</div>
         <div class="tab" data-tab="settings">⚙️ НАСТРОЙКИ</div>
-        <div class="tab" data-tab="history">📜 ИСТОРИЯ</div>
+        <div class="tab" data-tab="info">ℹ️ ИНФО</div>
     </div>
     
     <div id="searchesTab">
-        <div id="searchesList"></div>
+        <div class="glass-card" id="searchesList">
+            <div style="text-align:center; padding:20px;">📭 Добавьте первый поиск через бота</div>
+        </div>
     </div>
     
     <div id="settingsTab" class="hidden">
-        <div class="setting-card">
-            <h3>🌐 Язык интерфейса</h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
-                <div class="lang-btn" data-lang="ru">🇷🇺 Русский</div>
-                <div class="lang-btn" data-lang="ua">🇺🇦 Українська</div>
-                <div class="lang-btn" data-lang="en">🇬🇧 English</div>
-                <div class="lang-btn" data-lang="pl">🇵🇱 Polski</div>
+        <div class="glass-card">
+            <h3>🌐 Язык</h3>
+            <div style="display:flex; gap:10px; margin-top:12px;">
+                <span class="filter-tag" onclick="setLang('ru')">🇷🇺 Русский</span>
+                <span class="filter-tag" onclick="setLang('ua')">🇺🇦 Українська</span>
+                <span class="filter-tag" onclick="setLang('en')">🇬🇧 English</span>
+                <span class="filter-tag" onclick="setLang('pl')">🇵🇱 Polski</span>
             </div>
         </div>
         
-        <div class="setting-card">
+        <div class="glass-card">
             <h3>💎 Тариф</h3>
-            <div id="tariffInfo"></div>
-            <button class="btn btn-primary" style="margin-top:12px;" onclick="buyPremium()">💎 Купить Премиум</button>
+            <p>🆓 FREE — 1 поиск, 5 минут</p>
+            <p>💎 PREMIUM (49 PLN) — до 10 поисков, 1 минута, фото</p>
+            <p>👑 PRO (99 PLN) — безлимит, 30 секунд, фото</p>
+            <button class="btn" onclick="buyPremium()">💎 Купить Премиум</button>
         </div>
         
-        <div class="setting-card">
-            <h3>⚙️ Глобальные фильтры</h3>
-            <div class="filters">
-                <div class="filter-tag" data-filter="min_price" onclick="setGlobalFilter('min_price', 0)">💰 Любая цена</div>
-                <div class="filter-tag" data-filter="min_price" onclick="setGlobalFilter('min_price', 500)">💰 от 500 zł</div>
-                <div class="filter-tag" data-filter="min_price" onclick="setGlobalFilter('min_price', 1000)">💰 от 1000 zł</div>
-            </div>
-        </div>
-        
-        <div class="setting-card">
+        <div class="glass-card">
             <h3>📊 Статистика бота</h3>
-            <button class="btn btn-secondary" onclick="loadStats()">🔄 Обновить</button>
-            <button class="btn btn-danger" onclick="clearHistory()">🗑 Очистить историю</button>
+            <button class="btn btn-secondary" onclick="openBot()">📱 Открыть бота</button>
         </div>
     </div>
     
-    <div id="historyTab" class="hidden">
-        <div id="historyList"></div>
-    </div>
-    
-    <button class="fab" id="fabBtn">✨ ДОБАВИТЬ ПОИСК</button>
-    
-    <div id="addModal" class="modal">
-        <div class="modal-content">
-            <h3>✨ Новый поиск</h3>
-            <input type="text" id="searchName" placeholder="Название (например: iPhone 15 Pro)">
-            <input type="text" id="searchUrl" placeholder="Ссылка на Vinted">
-            <input type="number" id="minPrice" placeholder="Мин. цена (0 = без лимита)">
-            <input type="number" id="maxPrice" placeholder="Макс. цена (0 = без лимита)">
-            <input type="number" id="targetPrice" placeholder="🎯 Целевая цена (опционально)">
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="sendSearch()">➕ Добавить</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Отмена</button>
-            </div>
+    <div id="infoTab" class="hidden">
+        <div class="glass-card">
+            <h3>ℹ️ Vinted Hunter Pro</h3>
+            <p>Профессиональный мониторинг Vinted</p>
+            <p>✅ Мгновенные уведомления</p>
+            <p>✅ Фильтры по цене и моделям</p>
+            <p>✅ Автообновление кук</p>
+            <p>✅ Поддержка 4 языков</p>
+            <button class="btn" onclick="openBot()">🚀 Перейти в бота</button>
         </div>
     </div>
+    
+    <button class="fab" onclick="openBot()">🚀 ОТКРЫТЬ БОТА</button>
     
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
-        tg.enableClosingConfirmation();
         
-        const API_BASE = 'https://your-server.com/api';
-        const CHAT_ID = tg.initDataUnsafe.user.id;
-        let currentLang = 'ru';
-        
-        const translations = {
-            ru: { searches: 'Поиски', history: 'История', settings: 'Настройки', search: 'Поиск', active: 'Активен', paused: 'Пауза', delete: 'Удалить', edit: 'Редактировать', start: 'Старт', pause: 'Пауза', noSearches: 'Нет активных поисков', emptyHistory: 'История пуста', buyPremium: 'Купить Премиум' },
-            ua: { searches: 'Пошуки', history: 'Історія', settings: 'Налаштування', search: 'Пошук', active: 'Активний', paused: 'Пауза', delete: 'Видалити', edit: 'Редагувати', start: 'Старт', pause: 'Пауза', noSearches: 'Немає активних пошуків', emptyHistory: 'Історія порожня', buyPremium: 'Купити Преміум' },
-            en: { searches: 'Searches', history: 'History', settings: 'Settings', search: 'Search', active: 'Active', paused: 'Paused', delete: 'Delete', edit: 'Edit', start: 'Start', pause: 'Pause', noSearches: 'No active searches', emptyHistory: 'History is empty', buyPremium: 'Buy Premium' },
-            pl: { searches: 'Wyszukiwania', history: 'Historia', settings: 'Ustawienia', search: 'Szukaj', active: 'Aktywny', paused: 'Wstrzymany', delete: 'Usuń', edit: 'Edytuj', start: 'Start', pause: 'Wstrzymaj', noSearches: 'Brak aktywnych wyszukiwań', emptyHistory: 'Historia jest pusta', buyPremium: 'Kup Premium' }
-        };
-        
-        function t(key) { return translations[currentLang][key] || key; }
-        
-        async function loadSearches() {
-            const container = document.getElementById('searchesList');
-            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            try {
-                const response = await fetch(`${API_BASE}/searches?chat_id=${CHAT_ID}`);
-                const data = await response.json();
-                document.getElementById('statSearches').innerText = data.searches?.length || 0;
-                document.getElementById('statToday').innerText = data.today_found || 0;
-                document.getElementById('statPlan').innerText = data.plan || 'FREE';
-                if (!data.searches || data.searches.length === 0) {
-                    container.innerHTML = `<div class="empty-state">📭 ${t('noSearches')}</div>`;
-                    return;
-                }
-                let html = '';
-                for (let s of data.searches) {
-                    html += `<div class="search-card">
-                        <div class="search-header">
-                            <span class="search-name">🔍 ${escapeHtml(s.name)}</span>
-                            <span class="filter-tag ${s.active ? 'active' : ''}">${s.active ? '🟢 ' + t('active') : '🔴 ' + t('paused')}</span>
-                        </div>
-                        <div class="filters">
-                            <span class="filter-tag">💰 ${s.min_price || 0} - ${s.max_price || '∞'} zł</span>
-                            ${s.target_price ? `<span class="filter-tag active">🎯 цель ${s.target_price} zł</span>` : ''}
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-secondary" onclick="toggleSearch(${s.id}, ${!s.active})">${s.active ? '⏸ ' + t('pause') : '▶️ ' + t('start')}</button>
-                            <button class="btn btn-primary" onclick="editSearch(${s.id})">✏️ ${t('edit')}</button>
-                            <button class="btn btn-danger" onclick="deleteSearch(${s.id})">🗑 ${t('delete')}</button>
-                        </div>
-                    </div>`;
-                }
-                container.innerHTML = html;
-            } catch(e) { container.innerHTML = '<div class="empty-state">❌ Ошибка загрузки</div>'; }
+        function openBot() {
+            tg.openTelegramLink('https://t.me/ВАШ_ЮЗЕРНЕЙМ_БОТА');
         }
         
-        async function loadHistory() {
-            const container = document.getElementById('historyList');
-            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            try {
-                const response = await fetch(`${API_BASE}/history?chat_id=${CHAT_ID}&limit=50`);
-                const data = await response.json();
-                if (!data.items || data.items.length === 0) {
-                    container.innerHTML = `<div class="empty-state">📭 ${t('emptyHistory')}</div>`;
-                    return;
-                }
-                let html = '';
-                for (let item of data.items) {
-                    html += `<div class="search-card">
-                        <div class="search-header"><span class="search-name">📱 ${escapeHtml(item.title)}</span></div>
-                        <div class="filters"><span class="filter-tag active">💰 ${item.price} zł</span></div>
-                        <div class="btn-group">
-                            <button class="btn btn-secondary" onclick="window.open('${item.url}', '_blank')">🔗 Открыть</button>
-                        </div>
-                    </div>`;
-                }
-                container.innerHTML = html;
-            } catch(e) { container.innerHTML = '<div class="empty-state">❌ Ошибка загрузки</div>'; }
+        function buyPremium() {
+            tg.showAlert('💎 Для покупки премиум откройте бота и нажмите "💎 КУПИТЬ ПРЕМИУМ"');
         }
         
-        function showAddModal() { document.getElementById('addModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('addModal').style.display = 'none'; }
-        
-        async function sendSearch() {
-            const name = document.getElementById('searchName').value.trim();
-            const url = document.getElementById('searchUrl').value.trim();
-            if (!name || !url) { tg.showAlert('❌ Заполните название и ссылку!'); return; }
-            try {
-                const response = await fetch(`${API_BASE}/searches`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID, name: name, url: url,
-                        min_price: parseInt(document.getElementById('minPrice').value) || 0,
-                        max_price: parseInt(document.getElementById('maxPrice').value) || 100000,
-                        target_price: parseInt(document.getElementById('targetPrice').value) || 0,
-                        photo_enabled: 1
-                    })
-                });
-                if (response.ok) { closeModal(); loadSearches(); tg.showAlert('✅ Поиск добавлен!'); }
-                else { tg.showAlert('❌ Ошибка'); }
-            } catch(e) { tg.showAlert('❌ Ошибка сети'); }
+        function setLang(lang) {
+            tg.showAlert('🌐 Язык изменён в боте! Откройте /start');
         }
         
-        async function deleteSearch(id) {
-            tg.showConfirm('Удалить поиск?', async (ok) => {
-                if (ok) {
-                    await fetch(`${API_BASE}/searches/${id}?chat_id=${CHAT_ID}`, { method: 'DELETE' });
-                    loadSearches();
-                }
-            });
-        }
-        
-        async function toggleSearch(id, active) {
-            await fetch(`${API_BASE}/searches/${id}/toggle`, {
-                method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, active: active })
-            });
-            loadSearches();
-        }
-        
-        async function clearHistory() {
-            tg.showConfirm('Очистить всю историю?', async (ok) => {
-                if (ok) { await fetch(`${API_BASE}/history?chat_id=${CHAT_ID}`, { method: 'DELETE' }); loadHistory(); tg.showAlert('✅ История очищена'); }
-            });
-        }
-        
-        function buyPremium() { tg.showAlert('💎 Оплата: @CryptoBot\nСумма: 49 PLN/мес\nПосле оплаты напишите @Admin'); }
-        
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.onclick = () => { currentLang = btn.dataset.lang; loadSearches(); };
-        });
-        
+        // Переключение табов
         document.querySelectorAll('.tab').forEach(tab => {
-            tab.onclick = () => {
+            tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById('searchesTab').classList.add('hidden');
                 document.getElementById('settingsTab').classList.add('hidden');
-                document.getElementById('historyTab').classList.add('hidden');
-                if (tab.dataset.tab === 'searches') { document.getElementById('searchesTab').classList.remove('hidden'); loadSearches(); }
-                else if (tab.dataset.tab === 'settings') { document.getElementById('settingsTab').classList.remove('hidden'); }
-                else { document.getElementById('historyTab').classList.remove('hidden'); loadHistory(); }
-            };
+                document.getElementById('infoTab').classList.add('hidden');
+                if (tab.dataset.tab === 'searches') document.getElementById('searchesTab').classList.remove('hidden');
+                else if (tab.dataset.tab === 'settings') document.getElementById('settingsTab').classList.remove('hidden');
+                else document.getElementById('infoTab').classList.remove('hidden');
+            });
         });
         
-        document.getElementById('fabBtn').onclick = showAddModal;
-        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-        
-        loadSearches();
+        // Подгружаем данные через WebAppData (без API)
+        tg.sendData(JSON.stringify({ action: 'getStats' }));
     </script>
 </body>
 </html>
